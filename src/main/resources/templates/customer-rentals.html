@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Rentals – FilmRental</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="layout">
+
+  <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+  <div class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Customer Rentals
+          <span class="badge-count" th:if="${rentals != null}"
+                th:text="${rentals.size()} + ' records'"></span>
+        </h1>
+        <div class="breadcrumb">
+          <a th:href="@{/dashboard}">Dashboard</a> / Customer Rentals
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Search bar -->
+      <form class="search-bar" th:action="@{/customer-rentals/data}" method="get">
+        <label for="customerId"><i class="fas fa-user"></i> Customer ID</label>
+        <input type="number" id="customerId" name="customerId" min="1"
+               th:value="${customerId != null ? customerId : ''}"
+               placeholder="e.g. 1" required/>
+        <button type="submit" class="btn-search">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </form>
+
+      <!-- Error -->
+      <div class="alert-danger" th:if="${errorMsg}">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span th:text="${errorMsg}"></span>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container" th:if="${rentals != null}">
+        <div class="table-header">
+          <h3><i class="fas fa-list" style="color:#e94560"></i> Rental Records
+            <span th:text="'for Customer #' + ${customerId}" th:if="${customerId != null}"></span>
+          </h3>
+        </div>
+
+        <div class="table-wrapper">
+          <table th:if="${!rentals.isEmpty()}">
+            <thead>
+              <tr>
+                <th>Rental ID</th>
+                <th>Rental Date</th>
+                <th>Return Date</th>
+                <th>Staff Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="r : ${rentals}">
+                <td><span class="cell-id" th:text="${r['rentalId']}"></span></td>
+                <td th:text="${r['rentalDate']}"></td>
+                <td>
+                  <span th:if="${r['returnDate'] != null}" th:text="${r['returnDate']}"></span>
+                  <span th:if="${r['returnDate'] == null}" class="cell-badge badge-amber">Not returned</span>
+                </td>
+                <td th:text="${r['staffName']}"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="empty-state" th:if="${rentals.isEmpty()}">
+            <div class="empty-icon">📭</div>
+            <p>No rental records found for this customer.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div th:if="${rentals == null}" style="text-align:center; padding:60px; color:#94a3b8;">
+        <div style="font-size:56px; margin-bottom:12px;">🔍</div>
+        <p style="font-size:1rem; font-weight:500;">Enter a Customer ID above to load their rental history.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
