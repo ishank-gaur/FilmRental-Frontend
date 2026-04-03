@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard – FilmRental</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <!-- Main -->
+    <div class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1>Dashboard</h1>
+                <div class="breadcrumb">Welcome back, <strong th:text="${username}">Admin</strong> 👋</div>
+            </div>
+        </div>
+
+        <div class="page-content">
+
+            <p style="color:#64748b; margin-bottom:24px; font-size:0.95rem;">
+                Select any API below to explore and view live data from the FilmRental backend.
+            </p>
+
+            <div class="dashboard-grid">
+
+                <!-- Customer Rentals -->
+                <a th:href="@{/customer-rentals}" class="api-card"
+                   style="--card-accent:#e94560; --card-icon-bg:#fef2f2;">
+                    <div class="card-icon">👤</div>
+                    <div class="card-title">Customer Rentals</div>
+                    <div class="card-desc">View rental records for a specific customer by ID.</div>
+                    <div class="card-endpoint">GET /api/v1/customers/{id}/rentals</div>
+                </a>
+
+                <!-- Film Actors -->
+                <a th:href="@{/film-actors}" class="api-card"
+                   style="--card-accent:#8b5cf6; --card-icon-bg:#f5f3ff;">
+                    <div class="card-icon">🎭</div>
+                    <div class="card-title">Film &amp; Actors</div>
+                    <div class="card-desc">Film details with all associated actors by film ID.</div>
+                    <div class="card-endpoint">GET /api/v1/films/{id}/actors</div>
+                </a>
+
+                <!-- Payment Details -->
+                <a th:href="@{/payment-details}" class="api-card"
+                   style="--card-accent:#22c55e; --card-icon-bg:#f0fdf4;">
+                    <div class="card-icon">💳</div>
+                    <div class="card-title">Payment Details</div>
+                    <div class="card-desc">Payment records with customer info and amounts.</div>
+                    <div class="card-endpoint">GET /api/v1/payments/details</div>
+                </a>
+
+                <!-- Rental Staff -->
+                <a th:href="@{/rental-staff}" class="api-card"
+                   style="--card-accent:#f59e0b; --card-icon-bg:#fffbeb;">
+                    <div class="card-icon">🧑‍💼</div>
+                    <div class="card-title">Rental Staff</div>
+                    <div class="card-desc">Rental records with the staff member who handled each.</div>
+                    <div class="card-endpoint">GET /api/v1/rentals/staff</div>
+                </a>
+
+                <!-- Rental Films -->
+                <a th:href="@{/rental-films}" class="api-card"
+                   style="--card-accent:#3b82f6; --card-icon-bg:#eff6ff;">
+                    <div class="card-icon">🎞️</div>
+                    <div class="card-title">Rental Films</div>
+                    <div class="card-desc">Rental records linked to film titles and return dates.</div>
+                    <div class="card-endpoint">GET /api/v1/rentals/films</div>
+                </a>
+
+            </div><!-- /dashboard-grid -->
+
+            <!-- Info banner -->
+            <div style="margin-top:40px; background:#f1f5f9; border-radius:12px; padding:20px 24px;
+                  display:flex; align-items:center; gap:14px; color:#475569; font-size:0.88rem;">
+                <span style="font-size:24px;">🔗</span>
+                <div>
+                    <strong style="color:#1e293b;">Backend API</strong> is running on
+                    <code style="background:#e2e8f0; padding:2px 8px; border-radius:4px; font-size:0.82rem;">http://localhost:8081</code>
+                    &nbsp;·&nbsp; All requests are authenticated via <strong>JWT Bearer Token</strong>.
+                </div>
+            </div>
+
+        </div><!-- /page-content -->
+    </div><!-- /main-content -->
+</div><!-- /layout -->
+</body>
+</html>

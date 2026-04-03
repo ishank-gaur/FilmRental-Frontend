@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login – FilmRental</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="login-page">
+    <div class="login-card">
+
+        <div class="login-brand">
+            <div class="logo-icon">🎬</div>
+            <h1>FilmRental</h1>
+            <p>Management Dashboard</p>
+        </div>
+
+        <!-- Error alert -->
+        <div class="alert-error" th:if="${error}">
+            <i class="fas fa-circle-exclamation"></i>
+            <span th:text="${error}">Invalid credentials.</span>
+        </div>
+
+        <form method="post" th:action="@{/login}">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrap">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" id="username" name="username"
+                           placeholder="Enter your username" required autofocus/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password" name="password"
+                           placeholder="Enter your password" required/>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                <i class="fas fa-right-to-bracket"></i>
+                Sign In
+            </button>
+
+        </form>
+
+        <p style="text-align:center; color:#94a3b8; font-size:0.78rem; margin-top:24px;">
+            Secured with JWT Authentication
+        </p>
+    </div>
+</div>
+</body>
+</html>

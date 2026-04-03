@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rental Staff – FilmRental</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="layout">
+
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1>Rental Staff
+                    <span class="badge-count" th:if="${rentals != null}"
+                          th:text="${rentals.size()} + ' records'"></span>
+                </h1>
+                <div class="breadcrumb">
+                    <a th:href="@{/dashboard}">Dashboard</a> / Rental Staff
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content">
+
+            <!-- Error -->
+            <div class="alert-danger" th:if="${errorMsg}">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span th:text="${errorMsg}"></span>
+            </div>
+
+            <!-- Stats strip -->
+            <div class="stats-strip" th:if="${rentals != null and !rentals.isEmpty()}">
+                <div class="stat-pill">
+                    <span class="stat-value" th:text="${rentals.size()}">0</span>
+                    <span class="stat-label">Total Rentals</span>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container" th:if="${rentals != null}">
+                <div class="table-header">
+                    <h3>
+                        <i class="fas fa-user-tie" style="color:#f59e0b"></i>
+                        Rental &amp; Staff Details
+                    </h3>
+                </div>
+
+                <div class="table-wrapper">
+                    <table th:if="${!rentals.isEmpty()}">
+                        <thead>
+                        <tr>
+                            <th>Rental ID</th>
+                            <th>Rental Date</th>
+                            <th>Staff ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="r : ${rentals}">
+                            <td><span class="cell-id" th:text="${r['rentalId']}"></span></td>
+                            <td th:text="${r['rentalDate']}"></td>
+                            <td>
+                  <span class="cell-badge badge-amber"
+                        th:text="${r['staffId']}"></span>
+                            </td>
+                            <td th:text="${r['firstName']}"></td>
+                            <td th:text="${r['lastName']}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="empty-state" th:if="${rentals.isEmpty()}">
+                        <div class="empty-icon">🧑‍💼</div>
+                        <p>No rental-staff records found.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

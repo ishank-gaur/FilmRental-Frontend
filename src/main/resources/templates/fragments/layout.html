@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     SIDEBAR FRAGMENT  –  th:replace="fragments/layout :: sidebar"
+════════════════════════════════════════════════════ -->
+<nav th:fragment="sidebar" class="sidebar">
+
+    <div class="sidebar-brand">
+        <div class="brand-icon">🎬</div>
+        <div class="brand-text">
+            <h2>FilmRental</h2>
+            <span>Admin Panel</span>
+        </div>
+    </div>
+
+    <div class="sidebar-nav">
+
+        <div class="nav-section-label">Main</div>
+
+        <a th:href="@{/dashboard}" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            Dashboard
+        </a>
+
+        <div class="nav-section-label" style="margin-top:16px;">API Explorer</div>
+
+        <a th:href="@{/customer-rentals}" class="nav-item">
+            <div class="nav-icon">👤</div>
+            Customer Rentals
+        </a>
+
+        <a th:href="@{/film-actors}" class="nav-item">
+            <div class="nav-icon">🎭</div>
+            Film &amp; Actors
+        </a>
+
+        <a th:href="@{/payment-details}" class="nav-item">
+            <div class="nav-icon">💳</div>
+            Payment Details
+        </a>
+
+        <a th:href="@{/rental-staff}" class="nav-item">
+            <div class="nav-icon">🧑‍💼</div>
+            Rental Staff
+        </a>
+
+        <a th:href="@{/rental-films}" class="nav-item">
+            <div class="nav-icon">🎞️</div>
+            Rental Films
+        </a>
+
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <div class="user-avatar"
+                 th:text="${username != null ? username.substring(0,1).toUpperCase() : 'U'}">U</div>
+            <div class="user-details">
+                <div class="user-name" th:text="${username}">Admin</div>
+                <div class="user-role">Administrator</div>
+            </div>
+        </div>
+        <a th:href="@{/logout}" class="btn-logout">
+            <i class="fas fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+</nav>
+
+</body>
+</html>
