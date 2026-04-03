@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Film &amp; Actors – FilmRental</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="layout">
+
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1>Film &amp; Actors
+                    <span class="badge-count" th:if="${actors != null}"
+                          th:text="${actors.size()} + ' records'"></span>
+                </h1>
+                <div class="breadcrumb">
+                    <a th:href="@{/dashboard}">Dashboard</a> / Film &amp; Actors
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content">
+
+            <!-- Search bar -->
+            <form class="search-bar" th:action="@{/film-actors/data}" method="get">
+                <label for="filmId"><i class="fas fa-film"></i> Film ID</label>
+                <input type="number" id="filmId" name="filmId" min="1"
+                       th:value="${filmId != null ? filmId : ''}"
+                       placeholder="e.g. 1" required/>
+                <button type="submit" class="btn-search">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <!-- Error -->
+            <div class="alert-danger" th:if="${errorMsg}">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span th:text="${errorMsg}"></span>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container" th:if="${actors != null}">
+                <div class="table-header">
+                    <h3>
+                        <i class="fas fa-masks-theater" style="color:#8b5cf6"></i>
+                        Actor Details
+                        <span th:if="${filmId != null}" th:text="'for Film #' + ${filmId}"></span>
+                    </h3>
+                </div>
+
+                <div class="table-wrapper">
+                    <table th:if="${!actors.isEmpty()}">
+                        <thead>
+                        <tr>
+                            <th>Film ID</th>
+                            <th>Film Title</th>
+                            <th>Actor ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="row : ${actors}">
+                            <!-- Backend returns Object[] so indices 0..4 -->
+                            <td th:if="${row instanceof T(java.util.Map)}">
+                                <span class="cell-id" th:text="${row['film_id'] ?: row['filmId'] ?: filmId}"></span>
+                            </td>
+                            <td th:if="${row instanceof T(java.util.Map)}"
+                                th:text="${row['title']}"></td>
+                            <td th:if="${row instanceof T(java.util.Map)}">
+                  <span class="cell-badge badge-purple"
+                        th:text="${row['actor_id'] ?: row['actorId']}"></span>
+                            </td>
+                            <td th:if="${row instanceof T(java.util.Map)}"
+                                th:text="${row['first_name'] ?: row['firstName']}"></td>
+                            <td th:if="${row instanceof T(java.util.Map)}"
+                                th:text="${row['last_name'] ?: row['lastName']}"></td>
+
+                            <!-- Fallback for Object[] (Jackson deserializes as List) -->
+                            <td th:unless="${row instanceof T(java.util.Map)}">
+                                <span class="cell-id" th:text="${row[0]}"></span>
+                            </td>
+                            <td th:unless="${row instanceof T(java.util.Map)}" th:text="${row[1]}"></td>
+                            <td th:unless="${row instanceof T(java.util.Map)}">
+                                <span class="cell-badge badge-purple" th:text="${row[2]}"></span>
+                            </td>
+                            <td th:unless="${row instanceof T(java.util.Map)}" th:text="${row[3]}"></td>
+                            <td th:unless="${row instanceof T(java.util.Map)}" th:text="${row[4]}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="empty-state" th:if="${actors.isEmpty()}">
+                        <div class="empty-icon">🎭</div>
+                        <p>No actors found for this film.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prompt state -->
+            <div th:if="${actors == null}" style="text-align:center; padding:60px; color:#94a3b8;">
+                <div style="font-size:56px; margin-bottom:12px;">🎬</div>
+                <p style="font-size:1rem; font-weight:500;">Enter a Film ID above to see its cast of actors.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
