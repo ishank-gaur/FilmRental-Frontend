@@ -61,5 +61,96 @@ public class ApiDataController {
         return "film-actors";
     }
 
+ // ─── Customer Rentals ─────────────────────────────────────────
+    @GetMapping("/customer-rentals")
+    public String customerRentalsPage(HttpSession session, Model model) {
+        String token = getToken(session);
+        if (notLoggedIn(token)) return "redirect:/login";
+        model.addAttribute("username", session.getAttribute("username"));
+        return "customer-rentals";
+    }
 
+    @GetMapping("/customer-rentals/data")
+    public String customerRentalsData(@RequestParam(defaultValue = "1") int customerId,
+                                       HttpSession session, Model model) {
+        String token = getToken(session);
+        if (notLoggedIn(token)) return "redirect:/login";
+
+        List<Map<String, Object>> data = Collections.emptyList();
+        String errorMsg = null;
+        try {
+            data = apiService.getCustomerRentals(token, customerId);
+            if (data == null) data = Collections.emptyList();
+        } catch (Exception e) {
+            errorMsg = "Error fetching data: " + e.getMessage();
+        }
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rentals", data);
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("errorMsg", errorMsg);
+        return "customer-rentals";
+    }
+ // ─── Payment Details ──────────────────────────────────────────
+    @GetMapping("/payment-details")
+    public String paymentDetails(HttpSession session, Model model) {
+        String token = getToken(session);
+        if (notLoggedIn(token)) return "redirect:/login";
+
+        List<Map<String, Object>> data = Collections.emptyList();
+        String errorMsg = null;
+        try {
+            data = apiService.getPaymentDetails(token);
+            if (data == null) data = Collections.emptyList();
+        } catch (Exception e) {
+            errorMsg = "Error fetching data: " + e.getMessage();
+        }
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("payments", data);
+        model.addAttribute("errorMsg", errorMsg);
+        return "payment-details";
+    }
+
+    // ─── Rental Staff ─────────────────────────────────────────────
+    @GetMapping("/rental-staff")
+    public String rentalStaff(HttpSession session, Model model) {
+        String token = getToken(session);
+        if (notLoggedIn(token)) return "redirect:/login";
+
+        List<Map<String, Object>> data = Collections.emptyList();
+        String errorMsg = null;
+        try {
+            data = apiService.getRentalStaff(token);
+            if (data == null) data = Collections.emptyList();
+        } catch (Exception e) {
+            errorMsg = "Error fetching data: " + e.getMessage();
+        }
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rentals", data);
+        model.addAttribute("errorMsg", errorMsg);
+        return "rental-staff";
+    }
+
+    // ─── Rental Films ─────────────────────────────────────────────
+    @GetMapping("/rental-films")
+    public String rentalFilms(HttpSession session, Model model) {
+        String token = getToken(session);
+        if (notLoggedIn(token)) return "redirect:/login";
+
+        List<Map<String, Object>> data = Collections.emptyList();
+        String errorMsg = null;
+        try {
+            data = apiService.getRentalFilms(token);
+            if (data == null) data = Collections.emptyList();
+        } catch (Exception e) {
+            errorMsg = "Error fetching data: " + e.getMessage();
+        }
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rentals", data);
+        model.addAttribute("errorMsg", errorMsg);
+        return "rental-films";
+    }
 }
