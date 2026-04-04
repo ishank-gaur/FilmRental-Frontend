@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Details – FilmRental</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<div class="layout">
+
+  <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+  <div class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Payment Details
+          <span class="badge-count" th:if="${payments != null}"
+                th:text="${payments.size()} + ' records'"></span>
+        </h1>
+        <div class="breadcrumb">
+          <a th:href="@{/dashboard}">Dashboard</a> / Payment Details
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Error -->
+      <div class="alert-danger" th:if="${errorMsg}">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span th:text="${errorMsg}"></span>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip" th:if="${payments != null and !payments.isEmpty()}">
+        <div class="stat-pill">
+          <span class="stat-value" th:text="${payments.size()}">0</span>
+          <span class="stat-label">Total Payments</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-value" style="color:#22c55e;">
+            $<span th:text="${#aggregates.sum(payments.![amount])}">0</span>
+          </span>
+          <span class="stat-label">Total Amount</span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container" th:if="${payments != null}">
+        <div class="table-header">
+          <h3>
+            <i class="fas fa-credit-card" style="color:#22c55e"></i>
+            Payment Records
+          </h3>
+        </div>
+
+        <div class="table-wrapper">
+          <table th:if="${!payments.isEmpty()}">
+            <thead>
+            <tr>
+              <th>Payment ID</th>
+              <th>Amount</th>
+              <th>Payment Date</th>
+              <th>Customer ID</th>
+              <th>First Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${payments}">
+              <td><span class="cell-id" th:text="${p['paymentId']}"></span></td>
+              <td>
+                  <span class="cell-badge badge-green"
+                        th:text="'$' + ${p['amount']}"></span>
+              </td>
+              <td th:text="${p['paymentDate']}"></td>
+              <td>
+                  <span class="cell-badge badge-blue"
+                        th:text="${p['customerId']}"></span>
+              </td>
+              <td th:text="${p['firstName']}"></td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div class="empty-state" th:if="${payments.isEmpty()}">
+            <div class="empty-icon">💳</div>
+            <p>No payment records found.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
